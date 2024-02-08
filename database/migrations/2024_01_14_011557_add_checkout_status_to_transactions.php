@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('log', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_user');
-            $table->text('activity');
-            $table->timestamps();
-
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->boolean('checkout_status')->default(false); // Ganti tipe data sesuai kebutuhan
         });
     }
+    
 
     /**
      * Reverse the migrations.
@@ -30,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log');
+        Schema::table('transactions', function (Blueprint $table) {
+            //
+        });
     }
 };

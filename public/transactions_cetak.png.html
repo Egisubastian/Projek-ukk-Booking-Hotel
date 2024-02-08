@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: "Courier New", monospace;
+                text-align: center;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                width: 70%; /* Adjust the width as needed */
+                margin: 20px auto;
+            }
+
+            .invoice {
+                border: 2px solid #000;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: left;
+                margin-bottom: 20px;
+            }
+
+            .invoice-header {
+                margin-bottom: 20px;
+            }
+
+            .invoice-header h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invoice-header img {
+            width: 70px;
+            margin-left: 10px; 
+        }
+            .invoice-item {
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .item-label {
+                font-weight: bold;
+            }
+
+            .footer {
+                font-size: 14px;
+                color: #888;
+                text-align: right;
+                margin-top: 20px;
+            }
+
+            .divider {
+                border-top: 1px solid #000;
+                margin: 10px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+                        <div class="invoice">
+                <div class="invoice-header">
+                    <h1>
+                        <img src="dist/img/hotel.jpg">Hotel Suka Suka<!-- Replace "hotel-icon.png" with your actual image file -->
+                    </h1>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Nomor Unik:</span> <span>7256745104</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Nama Pelanggan:</span> <span>Ana</span>
+                </div>
+                <div class="divider"></div>
+                <div class="invoice-item">
+                    <span class="item-label">Nama Produk:</span> <span>Kamar Deluxe</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Fasilitas:</span> <span>Kasur2, AC 1 , Meja, Kursi2,lemari2 kamar mandi</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Harga Produk:</span> <span>40000</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Pesan:</span> <span>2 Hari</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Total Harga:</span> <span>80000</span>
+                </div>
+                <div class="divider"></div>
+                <div class="invoice-item">
+                    <span class="item-label">Uang Bayar:</span> <span>300000</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Uang Kembali:</span> <span>220000</span>
+                </div>
+                <div class="divider"></div>
+                <div class="invoice-item">
+                    <span class="item-label">Tanggal Masuk:</span> <span>2024-01-25</span>
+                </div>
+                <div class="invoice-item">
+                    <span class="item-label">Tanggal Keluar:</span> <span>2024-01-27</span>
+                </div>
+                <div class="footer">
+                    <p>Terima kasih telah berkunjung ke Hotel Suka Suka.</p>
+                </div>
+            </div>
+                    </div>
+    </body>
+    </html>

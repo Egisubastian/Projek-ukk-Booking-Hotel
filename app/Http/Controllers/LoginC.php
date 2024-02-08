@@ -22,25 +22,51 @@ class LoginC extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+    
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
+    
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+        
             $LogM = LogM::create([
                 'id_user' => Auth::user()->id,
                 'activity' => 'User Melakukan Login'
             ]);
-            return redirect()->intended('/dashboard');
+        
+            $redirectTo = '/'; 
+        
+            $user = Auth::user();
+    
+            // Set flash message here
+            $request->session()->flash('success', 'Anda berhasil login!');
+    
+            if ($user) {
+                switch ($user->role) {
+                    case 'admin':
+                        return redirect('/dashboard');
+                        break;
+                    case 'kasir':
+                    case 'owner':
+                        return redirect('/dashboard');
+                        break;
+                    default:
+                        return redirect('/login');
+                }
+            }
+        } else {
+            return back()
+                ->withErrors(['loginError' => 'Username atau password salah'])
+                ->withInput($request->except('password'));
         }
-
-        return back()->withErrors([
-            'password' => 'Wrong username or password',
-        ]);
     }
+    
 
-     public function logout(Request $request)
+    public function logout(Request $request)
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Melakukan Logout'
         ]);

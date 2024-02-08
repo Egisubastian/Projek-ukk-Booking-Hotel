@@ -10,10 +10,11 @@ class TransactionsM extends Model
 {
     use HasFactory, Searchable;
     protected $table = "transactions";
-    protected $fillable = ["id", "id_produk", "nama_pelanggan", "nomor_unik", "uang_bayar", "uang_kembali"];
+    protected $fillable = ["id","id_produk", "nomor_unik", "nama_pelanggan", "fasilitas", "nomor_unik", "uang_bayar", "uang_kembali","status","total_harga"];
     protected $casts = [
-        'created_at' => 'datetime',
-    ];
+        'tanggal_checkin',
+            'tanggal_checkout',
+        ];
 
     public function searchableAs()
     {
@@ -26,5 +27,16 @@ class TransactionsM extends Model
             'nama_pelanggan'     => $this->nama_pelanggan,
             'created_at'     => $this->created_at,
         ];
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(ProductsM::class, 'id_produk', 'id');
+    }
+
+    public function getStatus()
+    {
+        // Add your logic to determine and return the status
+        return $this->attributes['status']; // Replace 'status' with the actual status field in your model
     }
 }

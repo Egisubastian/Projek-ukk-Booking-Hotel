@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductsM;
 use App\Models\LogM;
 use PDF;
-
 use Illuminate\Support\Facades\Auth;
-
 
 class ProductsC extends Controller
 {
@@ -18,20 +16,21 @@ class ProductsC extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $LogM = LogM::create([
+{
+    $LogM = LogM::create([
+        'id_user' => Auth::user()->id,
+        'activity' => 'User Melihat Halaman Produk'
+    ]);
 
-            'id_user' => Auth::user()->id,
-            'activity' => 'User Melihat Halaman Produk'
-        ]);
+    $subtitle = "Daftar Produk";
 
-        $subtitle = "Daftar Produk";
-        // $productsM = ProductsM::all();
-        // return view('products_index', compact('subtitle', 'productsM'));
-        $vcari = request('search');
-        $productsM = ProductsM::where('nama_produk', 'like', "%$vcari%")->paginate(10);
-        return view('products_index', compact('subtitle','productsM', 'vcari'));
-    }
+    $vcari = request('search');
+    // Ambil produk "available" dan "booked"
+    $productsM = ProductsM::where('nama_produk', 'like', "%$vcari%")->paginate(10);
+
+    return view('produk.products_index', compact('subtitle', 'productsM', 'vcari'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,13 +40,12 @@ class ProductsC extends Controller
     public function create()
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Berada Di Halaman Tambah Produk'
         ]);
 
         $subtitle = "Tambah Produk";
-        return view('products_create', compact('subtitle'));
+        return view('produk.products_create', compact('subtitle'));
     }
 
     /**
@@ -59,16 +57,18 @@ class ProductsC extends Controller
     public function store(Request $request)
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Melakukan Proses Tambah Produk'
         ]);
 
         $request->validate([
             'nama_produk' => 'required',
+            'fasilitas' => 'required',
             'harga_produk' => 'required',
         ]);
-        productsM::create($request->post());
+
+        ProductsM::create($request->all());
+
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
@@ -78,7 +78,6 @@ class ProductsC extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function show($id)
     {
         //
@@ -93,14 +92,13 @@ class ProductsC extends Controller
     public function edit($id)
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Berada Di Halaman Edit Produk'
         ]);
 
         $subtitle = "Edit Produk";
         $data = ProductsM::find($id);
-        return view('products_edit', compact('subtitle', 'data'));
+        return view('produk.products_edit', compact('subtitle', 'data'));
     }
 
     /**
@@ -113,20 +111,19 @@ class ProductsC extends Controller
     public function update(Request $request, $id)
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Melakukan Proses Edit Produk'
         ]);
 
         $request->validate([
-         'nama_produk' => 'required',
-         'harga_produk' => 'required',
-     ]);
+            'nama_produk' => 'required',
+            'fasilitas' => 'required',
+            'harga_produk' => 'required',
+        ]);
 
-     $data = request()->except(['_token', '_method', 'submit']);
+        ProductsM::where('id', $id)->update($request->except(['_token', '_method', 'submit']));
 
-     productsM::where('id', $id)->update($data);
-     return redirect()->route('products.index')->with('success', 'Produk berhasil diperbaharui');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbaharui');
     }
 
     /**
@@ -138,25 +135,24 @@ class ProductsC extends Controller
     public function destroy($id)
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Menghapus Halaman Produk'
         ]);
-        productsM::where('id', $id)->delete();
+
+        ProductsM::where('id', $id)->delete();
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
     }
 
     public function pdf()
     {
         $LogM = LogM::create([
-
             'id_user' => Auth::user()->id,
             'activity' => 'User Membuat PDF Produk'
         ]);
 
         $productsM = ProductsM::all();
-       
-        $pdf = PDF::loadview('products_pdf', ['productsM' => $productsM]);
+
+        $pdf = PDF::loadview('produk.products_pdf', ['productsM' => $productsM]);
         return $pdf->stream('products.pdf');
     }
 }

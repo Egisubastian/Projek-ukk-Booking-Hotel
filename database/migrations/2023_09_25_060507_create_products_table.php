@@ -12,14 +12,16 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_produk');
-            $table->integer('harga_produk');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('products', function (Blueprint $table) {
+        $table->id();
+        $table->string('nama_produk');
+        $table->integer('harga_produk'); // Corrected from 'int' to 'integer'
+        $table->text('fasilitas');
+        $table->string('status'); // tambahkan kolom 'status'
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
