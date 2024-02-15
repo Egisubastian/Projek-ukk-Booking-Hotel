@@ -1,6 +1,5 @@
 @extends('adminlte')
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -14,13 +13,10 @@
                 </ol>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
-<!-- Main content -->
 <section class="content">
-
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Tambah Data Transaksi</h3>
@@ -75,21 +71,17 @@
                     <input name="tanggal_checkin" id="tanggal_checkin" type="date" class="form-control"
                         placeholder="Pilih tanggal masuk..." required>
                 </div>
-
-                <!-- Tambahkan input tanggal keluar -->
                 <div class="form-group">
                     <label for="tanggal_checkout">Tanggal Keluar</label>
                     <input name="tanggal_checkout" id="tanggal_checkout" type="date" class="form-control"
                         placeholder="Pilih tanggal keluar..." required>
                 </div>
 
-                <!-- Ganti input jumlah hari dengan readonly -->
                 <div class="form-group">
                     <label for="jumlah_hari">Jumlah Hari</label>
                     <input name="jumlah_hari" id="jumlah_hari" type="text" class="form-control"
                         placeholder="Jumlah hari" readonly>
                 </div>
-
 
                 <div class="form-group">
                     <label for="">Total Harga</label>
@@ -120,25 +112,22 @@
                     <i class="fas fa-arrow-left custome-icon-color"> </i> Kembali
                 </a>
 
-                <button type="submit" name="submit" class="btn btn btn-outline-success">
-                    <i class="fas fa-plus custom-icon-color-green"></i> Tambah
+                <button type="submit"  onclick="return confirm('Apakah Anda yakin ingin menambahkan transaksi baru?')"
+                     name="submit" class="btn btn-outline-success">
+                    <i class="fas fa-plus custom-icon-color-green"></i> 
+                    Tambah
                 </button>
+
             </form>
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- /.card -->
-
 </section>
 
 <style>
     .btn {
         border: 2px solid #16253d;
-        /* Warna hijau cerah dan ketebalan stroke */
         transition: border-color 0.3s ease;
-        /* Efek transisi untuk perubahan warna */
         border-radius: 4px;
-        /* Pemberian sudut pada border (opsional) */
     }
 
     .btn:hover {
@@ -148,20 +137,15 @@
 
     .perbarui {
         border: 2px solid #53cc17;
-        /* Warna hijau cerah dan ketebalan stroke */
         transition: border-color 0.3s ease;
-        /* Efek transisi untuk perubahan warna */
         border-radius: 4px;
-        /* Pemberian sudut pada border (opsional) */
     }
 
     .perbarui:hover {
         outline: none;
         border-color: #3366ff;
     }
-</style>
 
-<style>
     .custome-icon-color {
         color: #ff0000;
 
@@ -225,8 +209,6 @@
 
             if (!isNaN(hargaProduk) && !isNaN(jumlahHari) && jumlahHari > 0) {
                 var totalHarga = hargaProduk * jumlahHari;
-
-                // Format totalHarga to remove decimal places
                 totalHargaInput.value = totalHarga.toFixed(0);
             }
         }
@@ -237,23 +219,16 @@
 
             if (!isNaN(uangBayar) && !isNaN(totalHarga) && uangBayar >= totalHarga) {
                 var uangKembali = uangBayar - totalHarga;
-
-                // Format uangKembali to remove decimal places
                 uangKembaliInput.value = uangKembali.toFixed(0);
             } else {
-                // If uangBayar is less than totalHarga or not a number, set uangKembali to the negative difference
                 var uangKembali = uangBayar - totalHarga;
                 uangKembaliInput.value = uangKembali.toFixed(0);
             }
         }
-
     });
-
 </script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 @endsection
-
 @section('active-menu-transactions', 'menu-open')
 @section('active-transactions', 'active')

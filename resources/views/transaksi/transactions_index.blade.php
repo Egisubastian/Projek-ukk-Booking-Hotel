@@ -1,7 +1,5 @@
 @extends('adminlte')
-
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header" style="background-color: #f2f2f2; padding: 20px;">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -11,13 +9,10 @@
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
                 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
             </div>
-
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right" style="background-color: transparent; margin-top: 5px;">
-                    @if (in_array(Auth::user()->role, ['admin']))
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
-                    @endif
-                    <li class="breadcrumb-item active">Transaksi</li>
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" style="color: #555;">Transaksi</li>
                 </ol>
             </div>
 
@@ -26,13 +21,10 @@
                     <li class="breadcrumb-item active"></li>
                 </ol>
             </div>
-
-        </div><!-- /.container-fluid -->
+        </div>
 </section>
 
-<!-- Main content -->
 <section class="content">
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Daftar Transaksi Kamar</h3>
@@ -47,33 +39,36 @@
                 <div id="errorAlert" class="alert alert-danger">{{ $error }}</div>
             @endif
             @if (in_array(Auth::user()->role, ['owner'])) 
-      <form action="{{ route('transactions.pdfFilter') }}" method="GET" style="font-size: 12px;"> 
-        <div class="form-group"> 
-          <label>Pilih Range Tanggal Laporan:</label> 
-          <div class="input-daterange input-group"> 
-            <input type="date" class="input-sm form-control" title="Tanggal Awal" 
-                  data-toggle="tooltip" data-placement="top" name="start_date" style="font-size: 12px;" /> 
-            <div class="input-group-prepend"> 
-              <span class="input-group-text" title="Sampai" 
-                  data-toggle="tooltip" data-placement="top" style="font-size: 12px;">-</span> 
-            </div> 
-            <input type="date" class="input-sm form-control" title="Tanggal Akhir" 
-                  data-toggle="tooltip" data-placement="top" name="end_date" style="font-size: 12px;" /> 
-            <button type="submit" class="btn btn-primary" style=" margin-left: 10px; font-size: 12px;"><i 
-                class="fas fa-download"></i> Laporan</button> 
-          </div> 
-        </div> 
-      </form> 
-      @endif
+            <form action="{{ route('transactions.pdfFilter') }}" method="GET" class="form-inline my-2">
+                <input type="date" class="form-control mr-2 btn-outline-primary" name="start_date" data-toggle="tooltip"
+                    title="Tanggal Masuk" />
 
-            @if (in_array(Auth::user()->role, ['kasir']))
-                <a href="{{ route('transactions.create') }}" class="btn btn btn-outline-success" title="Tambah Transaksi"
-                    onclick="return confirm('Apakah Anda yakin ingin menambahkan transaksi baru?')">
-                    <i class="fas fa-plus custom-icon-color-green"></i> Tambah Transaksi
-                </a>
-                <br><br>
+                <span class="input-group-text sampai-text stroke-text mr-2" data-toggle="tooltip"
+                    title="Sampai">-</span>
+
+                <input type="date" class="form-control mr-2 btn-outline-primary" name="end_date" data-toggle="tooltip"
+                    title="Tanggal Keluar" />
+
+                <button type="submit" class="btn btn btn-sm ml-1 btn btnn btn-pdf btn-outline-info"
+                    data-toggle="tooltip" title="Unduh Laporan PDF">
+                    <i class="fas fa-file-pdf text-primary"></i> Laporan PDF
+                </button>
+                
+                <script>
+                    $(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    });
+                </script>
+            </form>
             @endif
 
+            @if (in_array(Auth::user()->role, ['kasir']))
+                <a href="{{ route('transactions.create') }}" class="btn btn btn-outline-success" title="Tambah Transaksi">
+                    <i class="fas fa-plus custom-icon-color-green"></i> Tambah Transaksi
+                </a>
+<br>
+<br>
+            @endif
             @if (in_array(Auth::user()->role, ['admin','kasir']))
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-primary" id="myTable">
@@ -84,13 +79,13 @@
                                 <th style="text-align: center; vertical-align: middle;">Nama Pelanggan</th>
                                 <th style="text-align: center; vertical-align: middle;">Nama Kamar</th>
                                 <th style="text-align: center; vertical-align: middle;">Harga Kamar</th>
+                                <th style="text-align: center; vertical-align: middle;">Pesan</th>
+                                <th style="text-align: center; vertical-align: middle;">Total Harga</th>
                                 <th style="text-align: center; vertical-align: middle;">Uang Bayar</th>
                                 <th style="text-align: center; vertical-align: middle;">Uang Kembali</th>
                                 <th style="text-align: center; vertical-align: middle;">Tanggal Masuk</th>
                                 <th style="text-align: center; vertical-align: middle;">Tanggal Keluar</th>
-                                <th style="text-align: center; vertical-align: middle;">Pesan</th>
                                 <th style="text-align: center; vertical-align: middle;">Status</th>
-                                <th style="text-align: center; vertical-align: middle;">Total Harga</th>
                                 @if (in_array(Auth::user()->role, ['admin','kasir']))
                                     <th style="text-align: center; vertical-align: middle;">Aksi</th>
                                 @endif
@@ -103,18 +98,20 @@
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->nomor_unik }}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->nama_pelanggan }}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->nama_produk }}</td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        {{ number_format($transaction->harga_produk, 0, ',', '.') }}
+                                    <td style="text-align: center; vertical-align: middle;">Rp {{ number_format($transaction->harga_produk, 0, ',', '.') }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ $transaction->jumlah_hari }} Hari</td>
+                                        @if(isset($transaction->total_harga))
+                                            <td style="text-align: center; vertical-align: middle;">Rp{{ number_format($transaction->total_harga, 0, ',', '.') }}</td>
+                                        @else
+                                            <td style="text-align: center; vertical-align: middle;">-</td>
+                                        @endif
+                                    <td style="text-align: center; vertical-align: middle;">Rp{{ number_format($transaction->uang_bayar, 0, ',', '.') }}
                                     </td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        {{ number_format($transaction->uang_bayar, 0, ',', '.') }}
+                                    <td style="text-align: center; vertical-align: middle;"> Rp{{ number_format($transaction->uang_kembali, 0, ',', '.') }}
                                     </td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        {{ number_format($transaction->uang_kembali, 0, ',', '.') }}
-                                    </td>
+
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->tanggal_checkin }}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->tanggal_checkout }}</td>
-                                    <td style="text-align: center; vertical-align: middle;">{{ $transaction->jumlah_hari }} Hari</td>
                                     <td style="text-align: center; vertical-align: middle;">
                                         @if($transaction->checkout_status == '1')
                                             <span class="badge badge-success">Keluar</span>
@@ -122,11 +119,7 @@
                                             <span class="badge badge-danger">Masuk</span>
                                         @endif
                                     </td>
-                                    @if(isset($transaction->total_harga))
-                                        <td style="text-align: center; vertical-align: middle;">{{ number_format($transaction->total_harga, 0, ',', '.') }}</td>
-                                    @else
-                                        <td style="text-align: center; vertical-align: middle;">-</td>
-                                    @endif
+
                                     <td style="text-align: center; vertical-align: middle;">
                                         @if (in_array(Auth::user()->role, ['kasir']))
                                             <div class="btn-group" role="group" aria-label="Aksi">
@@ -143,8 +136,7 @@
                                         @if (in_array(Auth::user()->role, ['admin']))
                                             <div class="btn-group" role="group" aria-label="Aksi">
                                                 <a href="{{ route('transactions.edit', $transaction->id_trans) }}"
-                                                    class="btn btn-outline-warning mr-1" title="Edit"
-                                                    onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?')">
+                                                    class="btn btn-outline-warning mr-1" title="Edit">
                                                     <i class="fas fa-edit custom-icon-color-yellow"></i>
                                                 </a>
                                                 <form action="{{ route('transactions.destroy', $transaction->id_trans) }}"
@@ -160,6 +152,7 @@
                                         @endif
                                     </td>
                                 </tr>
+
                             @empty
                                 <tr>
                                     <td colspan="12">Transaksi Tidak Ditemukan</td>
@@ -169,7 +162,7 @@
                     </table>
                 </div>
             @endif
-
+<br>
             @if (in_array(Auth::user()->role, ['owner']))
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-primary" id="myTable">
@@ -180,13 +173,13 @@
                                 <th style="text-align: center; vertical-align: middle;">Nama Pelanggan</th>
                                 <th style="text-align: center; vertical-align: middle;">Nama Kamar</th>
                                 <th style="text-align: center; vertical-align: middle;">Harga Kamar</th>
+                                <th style="text-align: center; vertical-align: middle;">Pesan</th>
+                                <th style="text-align: center; vertical-align: middle;">Total Harga</th>
                                 <th style="text-align: center; vertical-align: middle;">Uang Bayar</th>
                                 <th style="text-align: center; vertical-align: middle;">Uang Kembali</th>
                                 <th style="text-align: center; vertical-align: middle;">Tanggal Masuk</th>
                                 <th style="text-align: center; vertical-align: middle;">Tanggal Keluar</th>
-                                <th style="text-align: center; vertical-align: middle;">Pesan</th>
                                 <th style="text-align: center; vertical-align: middle;">Status</th>
-                                <th style="text-align: center; vertical-align: middle;">Total Harga</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -196,30 +189,26 @@
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->nomor_unik }}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->nama_pelanggan }}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->nama_produk }}</td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        {{ number_format($transaction->harga_produk, 0, ',', '.') }}
+                                    <td style="text-align: center; vertical-align: middle;">Rp{{ number_format($transaction->harga_produk, 0, ',', '.') }}
                                     </td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        {{ number_format($transaction->uang_bayar, 0, ',', '.') }}
+                                    <td style="text-align: center; vertical-align: middle;">Rp{{ $transaction->jumlah_hari }} Hari</td>
+                                    @if(isset($transaction->total_harga))
+                                    <td style="text-align: center; vertical-align: middle;">Rp{{ number_format($transaction->total_harga, 0, ',', '.') }}</td>
+                                    @else
+                                        <td style="text-align: center; vertical-align: middle;">-</td>
+                                    @endif
+                                    <td style="text-align: center; vertical-align: middle;">Rp{{ number_format($transaction->uang_bayar, 0, ',', '.') }}
                                     </td>
-                                    <td style="text-align: center; vertical-align: middle;">
-                                        {{ number_format($transaction->uang_kembali, 0, ',', '.') }}
+                                    <td style="text-align: center; vertical-align: middle;">Rp {{ number_format($transaction->uang_kembali, 0, ',', '.') }}
                                     </td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->tanggal_checkin }}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{ $transaction->tanggal_checkout }}</td>
-                                    <td style="text-align: center; vertical-align: middle;">{{ $transaction->jumlah_hari }} Hari</td>
                                     <td style="text-align: center; vertical-align: middle;">
                                         @if($transaction->checkout_status == '1')
                                             <span class="badge badge-success">Keluar</span>
                                         @else
                                             <span class="badge badge-danger">Masuk</span>
                                         @endif
-                                    </td>
-                                    @if(isset($transaction->total_harga))
-                                        <td style="text-align: center; vertical-align: middle;">{{ number_format($transaction->total_harga, 0, ',', '.') }}</td>
-                                    @else
-                                        <td style="text-align: center; vertical-align: middle;">-</td>
-                                    @endif
                                     </td>
                                 </tr>
                             @empty
@@ -237,20 +226,12 @@
             <script type="text/javascript">
                 $(document).ready(function () {
                     let table = new DataTable('#myTable');
-
-                    // Membuat fungsi untuk menangani klik tombol Check Out
                     $(".btn-checkout").click(function () {
-                        // Mendapatkan nilai harga kamar dari data-harga atribut
                         var hargaKamar = parseFloat($(this).closest('.modal-content').find(".modal-body").data("harga"));
-
-                        // Mendapatkan nilai uang bayar dari input dengan nama 'uang_bayar'
                         var uangBayar = parseFloat($(this).closest('.modal-content').find("input[name='uang_bayar']").val());
-
-                        // Memeriksa apakah uang bayar kurang dari harga kamar
                         if (uangBayar < hargaKamar) {
-                            // Menampilkan pesan peringatan
                             alert("Uang yang dibayar tidak cukup. Pastikan jumlah pembayaran sesuai dengan harga kamar.");
-                            return false; // Mencegah formulir dikirim jika validasi gagal
+                            return false; 
                         }
                         return true;
                     });
@@ -264,7 +245,7 @@
                                 errorAlert.style.display = 'none'; 
                             }, 1000); 
                         }
-                    }, 3000); //
+                    }, 1000); //
                                  
                     setTimeout(function() {
                         var successAlert = document.getElementById('successAlert');
@@ -274,11 +255,8 @@
                                 successAlert.style.display = 'none'; 
                             }, 1000); 
                         }
-                    }, 3000); 
+                    }, 1000); 
             </script>
-
-            <!-- Modal Info -->
-            <!-- Modal Info -->
             @foreach ($transactionsM as $transaction)
             <div class="modal fade" id="infoModal{{ $transaction->id_trans }}" tabindex="-1" role="dialog"
                 aria-labelledby="infoModalLabel{{ $transaction->id_trans }}" aria-hidden="true">
@@ -295,15 +273,16 @@
                             <p><strong>Nomor Unik:</strong> {{ $transaction->nomor_unik }}</p>
                             <p><strong>Nama Pelanggan:</strong> {{ $transaction->nama_pelanggan }}</p>
                             <p><strong>Nama Kamar:</strong> {{ $transaction->nama_produk }}</p>
-                            <p><strong>Harga Kamar:</strong> {{ $transaction->harga_produk }}</p>
+                            <p><strong>Harga Kamar:</strong> {{ number_format($transaction->harga_produk, 0, ',', '.') }}</p>
                             <p><strong>Pesan :</strong> {{ $transaction->jumlah_hari }} Hari</p>
-                            <p><strong>Uang Bayar:</strong> {{ $transaction->uang_bayar }}</p>
-                            <p><strong>Uang Kembali:</strong> {{ $transaction->uang_kembali }}</p>
+                            <p><strong>Uang Bayar:</strong> {{ number_format($transaction->uang_bayar, 0, ',', '.') }}</p>
+                            <p><strong>Uang Kembali:</strong> {{ number_format($transaction->uang_kembali, 0, ',', '.') }}</p>
                             <p><strong>Tanggal Masuk:</strong> {{ $transaction->tanggal_checkin }}</p>
                             <p><strong>Tanggal Keluar:</strong> {{ $transaction->tanggal_checkout }}</p>
                             <p><strong>Status:</strong> {{ $transaction->checkout_status ? 'sudah Checkout' : 'Belum
-                                Checkout' }}</p>
-                            @if ($transaction->uang_kembali < 0) <div class="alert alert-danger mt-2">
+                                Checkout' }}</p>                         
+                             @if ($transaction->uang_kembali < 0) 
+                             <div class="alert alert-danger mt-2">
                                 Bayar kamar terlebih dahulu sebelum melakukan Check Out.
                         </div>
                         @endif
@@ -377,6 +356,5 @@
 </style>
 
 @endsection
-
 @section('active-menu-transactions', 'menu-open')
 @section('active-transactions', 'active')

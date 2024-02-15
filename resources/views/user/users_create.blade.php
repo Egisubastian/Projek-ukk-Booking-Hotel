@@ -79,7 +79,7 @@
                     <i class="fas fa-arrow-left custome-icon-color"> </i> Kembali
                 </a>
 
-                <button type="submit" name="submit" class="btn btn btn-outline-success">
+                <button type="submit"  onclick="return confirm('Apakah Anda yakin ingin menambahkan data pengguna baru?')" name="submit" class="btn btn btn-outline-success">
                     <i class="fas fa-plus custom-icon-color-green"></i> Tambah
                 </button>
             </form>

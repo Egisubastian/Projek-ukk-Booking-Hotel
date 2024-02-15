@@ -69,7 +69,7 @@
                     <i class="fas fa-arrow-left custome-icon-color"></i> Kembali
                 </a>
 
-                <button type="submit" name="submit" class="btn btn btn-outline-success">
+                <button type="submit"  onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?')" name="submit" class="btn btn btn-outline-success">
                     <span class="fas fa-sync-alt custom-icon-color-green"></span> Perbarui
                 </button>
 

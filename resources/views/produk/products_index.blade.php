@@ -1,6 +1,5 @@
 @extends('adminlte')
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header" style="background-color: #f2f2f2; padding: 20px;">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -17,38 +16,31 @@
                 </ol>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
-<!-- Main content -->
 <section class="content">
-
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Daftar Kamar</h3>
         </div>
 
         <div class="card-body">
-    @if ($message = Session::get('success'))
-        <div id="successAlert" class="alert alert-success">{{ $message }}</div>
-    @endif
+            @if ($message = Session::get('success'))
+            <div id="successAlert" class="alert alert-success">{{ $message }}</div>
+            @endif
 
             @if (Auth::user()->role == 'admin')
-            <a href="{{ route('products.create') }}" class="btn btn btn-outline-success" title="Tambah Kamar"
-                onclick="return confirm('Apakah Anda yakin ingin menambahkan kamar baru?')">
+            <a href="{{ route('products.create') }}" class="btn btn btn-outline-success" title="Tambah Kamar">
                 <i class="fas fa-plus custom-icon-color-green"></i> Tambah Data
             </a>
             @endif
 
-
             <a href="{{ url('products/pdf') }}" class="btn btnn btn-outline-info" title="Unduh Laporan PDF">
                 <i class="fas fa-file-pdf custom-icon-color-blue"></i> Laporan PDF
             </a>
-
-            <br>
-            <br>
-
+<br>
+<br>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-primary" id="myTable">
                     <thead class="thead-light" style="background-color: #3498db; color: #fff;">
@@ -70,8 +62,7 @@
                             <td style="text-align: center; vertical-align: middle;">{{ $loop->iteration }}</td>
                             <td style="text-align: center; vertical-align: middle;">{{ $product->nama_produk}}</td>
                             <td style="text-align: center; vertical-align: middle;">{{ $product->fasilitas}}</td>
-                            <td style="text-align: center; vertical-align: middle;">
-                                {{ number_format($product->harga_produk, 0, ',', '.') }}
+                            <td style="text-align: center; vertical-align: middle;"> Rp {{ number_format($product->harga_produk, 0, ',', '.') }}
                             </td>
                             <td style="text-align: center; vertical-align: middle;">
                                 @if($product->status == 'available')
@@ -83,8 +74,7 @@
                             @if (Auth::user()->role == 'admin')
                             <td style="text-align: center; vertical-align: middle;">
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn btn-outline-warning"
-                                    style="margin-right: 5px;" class="btn btn-edit mr-1" title="Edit"
-                                    onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?')">
+                                    style="margin-right: 5px;" class="btn btn-edit mr-1" title="Edit">
 
                                     <i class="fas fa-edit custom-icon-color-yellow"></i>
                                 </a>
@@ -98,7 +88,6 @@
                                     </button>
                                 </form>
                             </td>
-
                             @endif
                         </tr>
                         @endforeach
@@ -117,25 +106,25 @@
         </script>
 
         <script>
-             setTimeout(function() {
-                        var errorAlert = document.getElementById('errorAlert');
-                        if (errorAlert) {
-                            errorAlert.classList.add('fade-out');
-                            setTimeout(function() {
-                                errorAlert.style.display = 'none'; 
-                            }, 1000); 
-                        }
-                    }, 5000); //
-                                 
-                    setTimeout(function() {
-                        var successAlert = document.getElementById('successAlert');
-                        if (successAlert) {
-                            successAlert.classList.add('fade-out'); 
-                            setTimeout(function() {
-                                successAlert.style.display = 'none'; 
-                            }, 1000); 
-                        }
-                    }, 5000); 
+            setTimeout(function () {
+                var errorAlert = document.getElementById('errorAlert');
+                if (errorAlert) {
+                    errorAlert.classList.add('fade-out');
+                    setTimeout(function () {
+                        errorAlert.style.display = 'none';
+                    }, 1000);
+                }
+            }, 1000); 
+
+            setTimeout(function () {
+                var successAlert = document.getElementById('successAlert');
+                if (successAlert) {
+                    successAlert.classList.add('fade-out');
+                    setTimeout(function () {
+                        successAlert.style.display = 'none';
+                    }, 1000);
+                }
+            }, 1000); 
         </script>
 
 </section>

@@ -206,13 +206,12 @@ class TransactionsC extends Controller
             $lastTransaction = TransactionsM::orderBy('tanggal_checkin', 'asc')->first(); 
  
             // Periksa apakah ada data transaksi 
-            if ($lastTransaction) { 
-                $startDate = $lastTransaction->	tanggal_checkin->format('Y-m-d'); 
+            if ($lastTransaction && $lastTransaction->tanggal_checkin instanceof DateTime) { 
+                $startDate = $lastTransaction->tanggal_checkin->format('Y-m-d'); 
             } else { 
-                // Atur tanggal default jika tidak ada transaksi 
+                // Set default date if there is no transaction or tanggal_checkin is not a DateTime object
                 $startDate = now()->format('Y-m-d'); 
             } 
- 
             $endDate = now()->format('Y-m-d'); 
         } 
  
@@ -229,18 +228,21 @@ class TransactionsC extends Controller
         return $pdf->stream('transactions.pdf'); 
     }
 
-    public function cetak($id){
-        $LogM = LogM::create([
+    public function cetak($id) {
+        $logM = LogM::create([
             'id_user' => Auth::user()->id,
             'activity' => 'User Mencetak Struk'
         ]);
-
+    
         $transactionsM = TransactionsM::select('transactions.*', 'products.*', 'transactions.id AS id_trans')
-        ->join('products', 'products.id', '=', 'transactions.id_produk')->where('transactions.id', $id)->get();
-        $pdf = PDF::loadview('transaksi.transactions_cetak',['transactionsM' => $transactionsM]);
+            ->join('products', 'products.id', '=', 'transactions.id_produk')
+            ->where('transactions.id', $id)
+            ->get();
+    
+        $pdf = PDF::loadview('transaksi.transactions_cetak', ['transactionsM' => $transactionsM])->setPaper([0, 0, 300, 440], 'custom');
         return $pdf->stream('transactions.pdf');
     }
-
+    
     public function checkout($id)
 {
     // Create a log entry for the check-out process
@@ -276,8 +278,6 @@ class TransactionsC extends Controller
 
     return redirect()->route('transactions.index')->with('success', 'Check out berhasil dilakukan');
 }
-
-    
 
 }
 

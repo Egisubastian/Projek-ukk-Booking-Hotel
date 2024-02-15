@@ -66,6 +66,15 @@ if ($resultTotalHarga) {
     $totalTotalHarga = 0;
 }
 
+$queryAvailableProducts = "SELECT COUNT(*) as total_available_products FROM products WHERE status = 'available'";
+$resultAvailableProducts = $conn->query($queryAvailableProducts);
+$rowAvailableProducts = $resultAvailableProducts->fetch_assoc();
+$totalAvailableProducts = $rowAvailableProducts['total_available_products'];
+
+$queryBookedProducts = "SELECT COUNT(*) as total_booked_products FROM products WHERE status = 'booked'";
+$resultBookedProducts = $conn->query($queryBookedProducts);
+$rowBookedProducts = $resultBookedProducts->fetch_assoc();
+$totalBookedProducts = $rowBookedProducts['total_booked_products'];
 
 // Tutup koneksi database
 $conn->close();
@@ -74,6 +83,7 @@ $conn->close();
         <div class="container">
             <div class="row">
                 <!-- Kamar -->
+                @if (in_array(Auth::user()->role, ['admin','owner']))
                 <div class="col-12 col-md-6 col-lg-3 mb-4">
                     <a href="{{ url('/products') }}" class="text-decoration-none text-dark">
                         <div class="info-box bg-info">
@@ -90,6 +100,27 @@ $conn->close();
                         </div>
                     </a>
                 </div>
+                @endif
+
+                @if (in_array(Auth::user()->role, ['kasir']))
+                <div class="col-12 col-md-6 col-lg-3 mb-4">
+                    <a href="{{ url('/products') }}" class="text-decoration-none text-dark">
+                        <div class="info-box bg-info">
+                            <span class="info-box-icon elevation-1 bg-user">
+                                <i class="fas fa-bed text-info"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Kamar</span>
+                                <span class="info-box-number">
+                                {{ $totalProducts }} -  <small>Tersedia</small>  {{ $totalAvailableProducts }}
+                                    <small>Kamar</small>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endif
+
                 <!-- Transaksi -->
                 <div class="col-12 col-md-6 col-lg-3 mb-4">
                     <a href="{{ url('/transactions') }}" class="text-decoration-none text-dark">
@@ -166,7 +197,8 @@ $conn->close();
         <body>
             <header
                 style="background: linear-gradient(to right, rgb(0, 0, 128), rgb(45, 45, 45), rgb(128, 0, 32)); color: #fff; text-align: center; padding: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; position: relative;">
-                <h1 style="margin: 0; font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Selamat Datang
+                <h1 style="margin: 0; font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Selamat Datang - {{
+                    Auth::user()->name }}
                 </h1>
             </header>
             <br>

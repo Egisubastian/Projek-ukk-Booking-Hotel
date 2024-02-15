@@ -12,6 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right" style="background-color: transparent; margin-top: 5px;">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                     <li class="breadcrumb-item active" style="color: #555;">Log Aktivitas</li>
                 </ol>
             </div>

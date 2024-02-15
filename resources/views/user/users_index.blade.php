@@ -29,11 +29,22 @@
         </div>
 
         <div class="card-body">
-            @if($message = Session::get('success'))
-            <div class="alert alert-success auto-hide-message">{{ $message }}</div>
-            @endif
-            <a href="{{ route('users.create') }}" class="btn btn btn-outline-success" title="Tambah Kamar"
-                onclick="return confirm('Apakah Anda yakin ingin menambahkan data pengguna baru?')">
+        @if ($message = Session::get('success'))
+            <div id="successAlert" class="alert alert-success auto-hide-message">{{ $message }}</div>
+            <script>
+                setTimeout(function() {
+                    var successAlert = document.getElementById('successAlert');
+                    if (successAlert) {
+                        successAlert.classList.add('fade-out'); 
+                        setTimeout(function() {
+                            successAlert.style.display = 'none'; 
+                        }, 1000); 
+                    }
+                }, 1000);
+            </script>
+        @endif
+
+            <a href="{{ route('users.create') }}" class="btn btn btn-outline-success" title="Tambah Kamar">
                 <i class="fas fa-plus custom-icon-color-green"></i> Tambah Data
             </a>
 
@@ -66,8 +77,7 @@
                             <td style="text-align: center; vertical-align: middle;">
 
 
-                                <a href="{{ route('users.edit', $users->id) }}" class="btn btn btn-outline-warning"
-                                    title="Edit" onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?')">
+                                <a href="{{ route('users.edit', $users->id) }}" class="btn btn btn-outline-warning"title="Edit">
                                     <i class="fas fa-edit custom-icon-color-yellow"></i>
                                 </a>
 

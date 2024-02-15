@@ -1,6 +1,5 @@
 @extends('adminlte')
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -17,10 +16,7 @@
   </div>
 </section>
 
-<!-- Main content -->
 <section class="content">
-
-  <!-- Default box -->
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Tambah Data Kamar</h3>
@@ -55,24 +51,20 @@
           <i class="fas fa-arrow-left custome-icon-color "> </i> Kembali
         </a>
         
-        <button type="submit" name="submit" class="btn btn-outline-success">
+        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menambahkan transaksi baru?')" name="submit" class="btn btn-outline-success">
           <i class="fas fa-plus custom-icon-color-green"></i> Tambah
         </button>
 
       </form>
     </div>
   </div>
-  <!-- /.card -->
 
 </section>
 <style>
   .btn {
     border: 2px solid #21c500;
-    /* Warna hijau cerah dan ketebalan stroke */
     transition: border-color 0.3s ease;
-    /* Efek transisi untuk perubahan warna */
     border-radius: 4px;
-    /* Pemberian sudut pada border (opsional) */
   }
 
   .btnn {

@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="nama_pelanggan">Nama Pelanggan</label>
                     <input name="nama_pelanggan" type="text" class="form-control" placeholder="..."
-                        value="{{ $transactions->nama_pelanggan }}">
+                        value="{{ $transactions->nama_pelanggan }}" readonly>
                     @error('nama_pelanggan')
                     <p>{{ $message }}</p>
                     @enderror
@@ -140,8 +140,9 @@
                     <i class="fas fa-arrow-left custome-icon-color"></i> Kembali
                 </a>
 
-                <button type="submit" name="submit" class="btn btn btn-outline-success">
-                    <span class="fas fa-sync-alt custom-icon-color-green"></span> Perbarui
+                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin Mengubaha transaksi Ini?')" name="submit" class="btn btn btn-outline-success">
+                    <span class="fas fa-sync-alt custom-icon-color-green"
+                    onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?')"></span> Perbarui
                 </button>
             </form>
         </div>

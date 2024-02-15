@@ -12532,7 +12532,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
     border-color: rgba(0, 0, 0, 0.1);
 }
 [class*="sidebar-dark-"] {
-    background-color: #16253D;
+    background: linear-gradient(to right, rgb(0, 0, 128), rgb(128, 0, 128));
 }
 [class*="sidebar-dark-"] .user-panel a:hover {
     color: #fff;

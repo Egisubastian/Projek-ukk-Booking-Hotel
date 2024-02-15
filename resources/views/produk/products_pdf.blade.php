@@ -8,101 +8,91 @@
 </head>
 
 <body>
-    <h1>Daftar Kamar</h1>
-    <table>
-        <tr>
-            <th>Nama Kamar</th>
-            <th>Harga Kamar</th>
-            <th>Fasilitas</th>
-            <th>Tanggal</th>
-        </tr>
-        @if(count($productsM) > 0)
-        @foreach ($productsM as $products)
-        <tr>
-            <td>{{ $products->nama_produk}}</td>
-            <td>Rp{{ $products->harga_produk}}</td>
-            <td>{{ $products->fasilitas}}</td>
-            <td>{{ $products->created_at }}</td>
-        </tr>
-        @endforeach
-        @else
-        <tr>
-            <td colspan="4">Data Kamar Tidak Ditemukan</td>
-        </tr>
-        @endif
-    </table>
-
-    <?php
-    $totalKamar = count($productsM);
-    $totalHarga = 0;
-
-    foreach ($productsM as $products) {
-        $totalHarga += $products->harga_produk;
-    }
-    ?>
-
-    <div class="summary">
-        <h2>Ringkasan:</h2>
-        <p>Jumlah kamar: <strong>{{ $totalKamar }}</strong></p>
-        <p>Total Harga Kamar: <strong>Rp{{ $totalHarga }}</strong></p>
+    <div class="container">
+        <h1>Daftar List Kamar</h1>
+        <table>
+            <tr>
+                <th>Nama Kamar</th>
+                <th>Harga Kamar</th>
+                <th>Fasilitas</th>
+                <th>Tanggal</th>
+            </tr>
+            @if(count($productsM) > 0)
+            <?php $totalHarga = 0; ?>
+            @foreach ($productsM as $products)
+            <tr>
+                <td>{{ $products->nama_produk}}</td>
+                <td>Rp {{ number_format($products->harga_produk, 0, ',', '.') }}</td>
+                <td>{{ $products->fasilitas}}</td>
+                <td>{{ $products->created_at }}</td>
+            </tr>
+            <?php $totalHarga += $products->harga_produk; ?>
+            @endforeach
+            <tr>
+                <td colspan="4"><strong>Total Kamar:</strong> {{ count($productsM) }}</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>Total Harga Kamar:</strong></td>
+                <td>Rp {{ number_format($totalHarga, 0, ',', '.') }}</td>
+            </tr>
+            @else
+            <tr>
+                <td colspan="4">Data Kamar Tidak Ditemukan</td>
+            </tr>
+            @endif
+        </table>
     </div>
-
 </body>
 
 <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 20px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
 
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    h1 {
+        font-family: 'Times New Roman', Times, serif;
+        text-align: left;
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 15;
+    }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-            font-size: 12px;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th,
+    td {
+        border: 1px solid #000;
+        padding: 8px;
+        font-size: 14px;
+    }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+    th {
+        background-color: #f2f2f2;
+    }
 
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-        td[colspan="4"] {
-            text-align: center;
-            font-style: italic;
-            font-size: 14px;
-            color: #555;
-        }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
 
-        .summary {
-            margin-top: 20px;
-            background-color: #f2f2f2;
-            padding: 12px;
-            border-radius: 8px;
-        }
+    td[colspan="4"] {
+        text-align: center;
+        font-style: italic;
+        font-size: 14px;
+        color: #555;
+    }
+</style>
 
-        .summary p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #333;
-        }
-    </style>
 </html>

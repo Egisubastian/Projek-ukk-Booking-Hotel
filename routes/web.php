@@ -26,9 +26,9 @@ Route::post('/transactions/clearCart', [TransactionsC::class, 'clearCart'])->nam
 Route::post('/transactions/checkoutCart', [TransactionsC::class, 'checkoutCart'])->name('transactions.checkoutCart');
 
 
-Route::get('transactions/pdfFilter', [TransactionsC::class, 'pdfFilter'])->name('transactions.pdfFilter')->middleware('userAkses:owner,admin');
+Route::get('transactions/pdfFilter', [TransactionsC::class, 'pdfFilter'])->name('transactions.pdfFilter')->middleware('userAkses:owner');
 Route::get('transactions/cetak/{id}', [TransactionsC::class,'cetak'])->name('transactions.cetak')->middleware('userAkses:admin,kasir');
-Route::get('products/pdf', [ProductsC::class, 'pdf'])->middleware('userAkses:admin,owner');
+Route::get('products/pdf', [ProductsC::class, 'pdf'])->middleware('userAkses:admin,owner,kasir');
 
 Route::resource('products', ProductsC::class)->middleware('userAkses:admin,owner,kasir');
 
