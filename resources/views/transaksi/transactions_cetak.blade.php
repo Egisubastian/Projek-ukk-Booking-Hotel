@@ -122,7 +122,7 @@
             <span>================================</span>
         </div>
         <div class="thank-you">
-            Jl. Raya Kalijati Timur Rt/RW 21/07 Kec.Kalijati Timun Dusun Cibodas
+            Jl. Raya Kalijati Timur Rt/RW 21/07 Kec.Kalijati Timur Dusun Cibodas
         </div>
     </div>
     </div>
